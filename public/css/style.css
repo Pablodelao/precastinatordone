@@ -752,6 +752,16 @@ LAYOUT (signup.ejs)
   .hidden {
     display: none;
   }
+
+.trashBtn{
+    background: none;
+    width: 20px;
+    height: 20px;
+    border: none;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
   
   @media screen and (max-width: 550px) {
     .clock {

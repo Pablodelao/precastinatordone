@@ -1,158 +1,125 @@
-// const timer = {
-//     pomodoro: 25,
-//     shortBreak: 5,
-//     longBreak: 15,
-//     longBreakInterval: 4,
-//     sessions: 0,
-//   };
 
-//   console.log(2)
+        // document.getElementById("things").innerText = `You have ${Object.values(localStorage).length} things left to do `
+        // document.getElementById("things").innerText = `You have ${Object.values(localStorage).length} things left to do `
+ 
+        console.log(Object.values(localStorage).length);
   
-//   let interval;
+        function createItem(){
+          const belement = document.querySelector(".tasksList");
+          belement.innerHTML="";
+          let keys= Object.keys(localStorage)
+          keys=keys.sort()
+          for (let index = 0; index < keys.length; index++) {
+          const idk = document.createElement("li");
+          idk.style.width='max-content'
+          const spann = document.createElement("span");
+          const ppp = document.createElement('div')
+          const text = document.createTextNode(
+            `${localStorage.getItem(keys[index])}`
+          );
+          const belement = document.querySelector(".tasksList");
+          
   
-//   const buttonSound = new Audio('/button-sound.mp3');
-//   const mainButton = document.getElementById('js-btn');
-//   mainButton.addEventListener('click', () => {
-//     buttonSound.play();
-//     const { action } = mainButton.dataset;
-//     if (action === 'start') {
-//       startTimer();
-//     } else {
-//       stopTimer();
-//     }
-//   });
+          belement.appendChild(idk);
+          idk.className = "not";
+          spann.className = 'fa fa-trash'
   
-//   const modeButtons = document.querySelector('#js-mode-buttons');
-//   modeButtons.addEventListener('click', handleMode);
+          idk.appendChild(ppp);
+          ppp.appendChild(text)
+          ppp.insertAdjacentHTML('beforeEnd',`<button onclick='trashClick(${keys[index]})' class='trashBtn'><span class='fa fa-trash'></span></button>`)
+          text.className = "plzwork"
   
-//   function getRemainingTime(endTime) {
-//     const currentTime = Date.parse(new Date());
-//     const difference = endTime - currentTime;
+          //         idk.textContent =  Object.values(localStorage)
+          //         document.body.append(idk)
+        }
   
-//     const total = Number.parseInt(difference / 1000, 10);
-//     const minutes = Number.parseInt((total / 60) % 60, 10);
-//     const seconds = Number.parseInt(total % 60, 10);
+        }
   
-//     return {
-//       total,
-//       minutes,
-//       seconds,
-//     };
-//   }
   
-//   function startTimer() {
-//     let { total } = timer.remainingTime;
-//     const endTime = Date.parse(new Date()) + total * 1000;
+        createItem();
   
-//     if (timer.mode === 'pomodoro') timer.sessions++;
+        document
+          .querySelector(".addButton")
+          .addEventListener("click", myFunction);
   
-//     mainButton.dataset.action = 'stop';
-//     mainButton.textContent = 'stop';
-//     mainButton.classList.add('active');
+        function myFunction() {
+          //storage num is the localstorage key it will always be +1 of the current local storage length
+          let keys= Object.keys(localStorage)
+          keys=keys.sort()
+          let max =keys[keys.length-1]
+          if (! max){
+            max=0
+          }
+          let storagenum =
+          localStorage.setItem(
+            parseInt(max)+1,
+            document.querySelector(".inputText").value
+          );
+          createItem();
+          count()
+        }
   
-//     interval = setInterval(function() {
-//       timer.remainingTime = getRemainingTime(endTime);
-//       updateClock();
+        const todoItem2 = document.querySelectorAll("li");
   
-//       total = timer.remainingTime.total;
-//       if (total <= 0) {
-//         clearInterval(interval);
+        Array.from(todoItem2).forEach((el) => {
+          el.addEventListener("click", markCompleteornincomplete);
+        });
   
-//         switch (timer.mode) {
-//           case 'pomodoro':
-//             if (timer.sessions % timer.longBreakInterval === 0) {
-//               switchMode('longBreak');
-//             } else {
-//               switchMode('shortBreak');
-//             }
-//             break;
-//           default:
-//             switchMode('pomodoro');
-//         }
+        function trashClick(index){
+          console.log(index ,"trash click")
+          localStorage.removeItem(index);
+          createItem();
+          count()
   
-//         if (Notification.permission === 'granted') {
-//           const text =
-//             timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
-//           new Notification(text);
-//         }
+        }
+        
   
-//         document.querySelector(`[data-sound="${timer.mode}"]`).play();
+        function markCompleteornincomplete() {
+          if (this.classList.contains("not")) {
+            this.classList.remove("not");
+            this.classList.add("completed");
+            count()
   
-//         startTimer();
-//       }
-//     }, 1000);
-//   }
+            console.log("haha1");
+          } else {
+            this.classList.remove("completed");
+            this.classList.add("not");
+            console.log("haha2");
+            count()
+          }
+        }
   
-//   function stopTimer() {
-//     clearInterval(interval);
+        const deleteBtn = document.querySelectorAll('.fa .fa-trash')
+        console.log('deleteBtn',deleteBtn)
   
-//     mainButton.dataset.action = 'start';
-//     mainButton.textContent = 'start';
-//     mainButton.classList.remove('active');
-//   }
+  Array.from(deleteBtn).forEach((el)=>{
+    console.log("e",e)
+  el.addEventListener('click', deleteTodo)
+  el.style.background='green'
   
-//   function updateClock() {
-//     const { remainingTime } = timer;
-//     const minutes = `${remainingTime.minutes}`.padStart(2, '0');
-//     const seconds = `${remainingTime.seconds}`.padStart(2, '0');
   
-//     const min = document.getElementById('js-minutes');
-//     const sec = document.getElementById('js-seconds');
-//     min.textContent = minutes;
-//     sec.textContent = seconds;
+  })
   
-//     const text =
-//       timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
-//     document.title = `${minutes}:${seconds} — ${text}`;
+  function deleteTodo (){
   
-//     const progress = document.getElementById('js-progress');
-//     progress.value = timer[timer.mode] * 60 - timer.remainingTime.total;
-//   }
+  console.log('delete')
+
+  }
+
+
+
   
-//   function switchMode(mode) {
-//     timer.mode = mode;
-//     timer.remainingTime = {
-//       total: timer[mode] * 60,
-//       minutes: timer[mode],
-//       seconds: 0,
-//     };
-  
-//     document
-//       .querySelectorAll('button[data-mode]')
-//       .forEach(e => e.classList.remove('active'));
-//     document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
-//     document.body.style.backgroundColor = `var(--${mode})`;
-//     document
-//       .getElementById('js-progress')
-//       .setAttribute('max', timer.remainingTime.total);
-  
-//     updateClock();
-//   }
-  
-//   function handleMode(event) {
-//     const { mode } = event.target.dataset;
-  
-//     if (!mode) return;
-  
-//     switchMode(mode);
-//     stopTimer();
-//   }
-  
-//   document.addEventListener('DOMContentLoaded', () => {
-//     if ('Notification' in window) {
-//       if (
-//         Notification.permission !== 'granted' &&
-//         Notification.permission !== 'denied'
-//       ) {
-//         Notification.requestPermission().then(function(permission) {
-//           if (permission === 'granted') {
-//             new Notification(
-//               'Awesome! You will be notified at the start of each session'
-//             );
-//           }
-//         });
-//       }
-//     }
-  
-//     switchMode('pomodoro');
-//   });
+
+
+  function count(){
+
+    let numm = document.querySelectorAll('.not').length
+    if(numm == 1){
+        document.getElementById("things").innerText = `You have ${document.querySelectorAll('.not').length} thing left to do `
+
+    }else {
+        document.getElementById("things").innerText = `You have ${document.querySelectorAll('.not').length} things left to do `
+    }
+  }
+
+  count()
