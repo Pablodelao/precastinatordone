@@ -56,6 +56,7 @@
             document.querySelector(".inputText").value
           );
           createItem();
+          location.reload()
           count()
         }
   
@@ -70,6 +71,7 @@
           localStorage.removeItem(index);
           createItem();
           count()
+          location.reload()
   
         }
         
@@ -79,6 +81,7 @@
             this.classList.remove("not");
             this.classList.add("completed");
             count()
+
   
             console.log("haha1");
           } else {
